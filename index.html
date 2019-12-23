@@ -1,0 +1,32 @@
+<canvas id="canvas"></canvas>
+<script>
+    (function() {
+        const canvas = document.getElementById('canvas'),
+        context = canvas.getContext('2d');
+
+        // resize the canvas to fill browser window dynamically
+        window.addEventListener('resize', resizeCanvas, false);
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+    })();
+</script>
+<script type="text/javascript" src="index.js"></script>
+<style>
+    * {  /* to remove the top and left whitespace */
+        margin:0;
+        padding:0;
+    }
+
+    html, body { /* just to be sure these are full screen*/
+        width:100%;
+        height:100%;
+    }
+
+    canvas { /* To remove the scrollbars */
+        display:block;
+    }
+</style>
