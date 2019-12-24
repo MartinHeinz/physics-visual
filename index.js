@@ -135,9 +135,27 @@ function resolveCollisionWithBounce(info) {
     info.o2.vy += k * ny / info.o2.m;
 }
 
+const CollisionTypes = Object.freeze({
+    "push": resolveCollision,
+    "bounce": resolveCollisionWithBounce
+});
+
+let currentCollisionType = CollisionTypes.bounce;
+
+
+function switchCollisionType() {
+    if (currentCollisionType === CollisionTypes.bounce) {
+        currentCollisionType = CollisionTypes.push
+    }
+    else {
+        currentCollisionType = CollisionTypes.bounce
+    }
+}
+document.getElementById("switchCollision").onclick = switchCollisionType;
+
 let objects = [
-    new Shape(100, 50, 10, 1, 1, 1),
-    new Shape(100, 80, 10, -1, -1, 1),
+    new Shape(100, 50, 10, 1, 1, 10),
+    new Shape(100, 80, 10, -1, -1, 10),
 ];
 
 const maxSpeed = 150;
@@ -145,13 +163,47 @@ const c = document.getElementById("canvas");
 const ctx = c.getContext("2d");
 
 
-c.addEventListener('click', function(event) {
+function createShape(event, radius=10, mass=10) {
     let x = event.pageX - c.offsetLeft;
     let y = event.pageY - c.offsetTop;
 
-    objects.push(new Shape(x, y, 10, getRandomInt(-1, 1), getRandomInt(-1, 1), 1));
-    // objects.push(new Shape(x, y, 10, 1, 1, 1));
+    objects.push(new Shape(x, y, radius, getRandomInt(-1, 1), getRandomInt(-1, 1), mass));
+}
+
+let holdTimer;
+let timerFlag;
+let startTime = new Date();
+function mouseDown() {
+    startTime = new Date();
+    holdTimer = window.setTimeout(myFunction,500); //set timeout to fire in 2 seconds when the user presses mouse button down
+}
+
+function myFunction() {
+    timerFlag = true;
+}
+c.addEventListener("mousedown", mouseDown);
+document.body.addEventListener("mouseup", function(event) {
+    removeTimer(event)
 }, false);
+
+function removeTimer(event) {
+    if(timerFlag) {
+        let endTime = new Date();
+        let timeDiff = endTime - startTime; //in ms
+        // strip the ms
+        timeDiff /= 1000;
+        createShape(event, Math.round(10*timeDiff), Math.ceil(10*timeDiff));
+        console.log(objects[objects.length- 1]);
+    }
+    else {
+        createShape(event);
+    }
+    if (holdTimer) {
+        window.clearTimeout(holdTimer);
+    }
+    timerFlag = false;
+}
+
 
 function animate() {
     ctx.clearRect(0, 0, c.width, c.height);
@@ -172,7 +224,7 @@ function animate() {
     }
 
     for (let col of collisions) {
-        resolveCollisionWithBounce(col)  // resolveCollision(col)
+        currentCollisionType(col)  // resolveCollision(col)
     }
     for (let o of objects) {
         o.draw();

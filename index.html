@@ -1,4 +1,7 @@
-<canvas id="canvas"></canvas>
+<input id="switchCollision" type="button" value="Switch Collision Type"/>
+<canvas id="canvas">
+</canvas>
+
 <script>
     (function() {
         const canvas = document.getElementById('canvas'),
@@ -27,6 +30,16 @@
     }
 
     canvas { /* To remove the scrollbars */
-        display:block;
+        height: 98%;
+        width: 100vw;
+        display: block;
+    }
+
+    #switchCollision {
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        width: 20%;
+        height: 2%;
     }
 </style>
