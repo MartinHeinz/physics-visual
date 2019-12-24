@@ -9,6 +9,8 @@ class Shape {
         this.m = m;
         this.vx = 0;
         this.vy = 0;
+        this.fx = 0;
+        this.fy = 0;
     }
 
     move(dt) {
@@ -29,7 +31,6 @@ class Shape {
         this.x += this.vx * dt;
         this.y += this.vy * dt;
     }
-
     draw() {
         //draw a circle
         ctx.beginPath();
@@ -135,12 +136,51 @@ function resolveCollisionWithBounce(info) {
     info.o2.vy += k * ny / info.o2.m;
 }
 
+function moveWithGravity(dt, o) {
+    for (let o1 of o) {
+        o1.fx = 0;
+        o1.fy = 0;
+    }
+
+    for (let [i, o1] of o.entries()) {
+        for (let [j, o2] of o.entries()) {
+            if (i < j) {
+                let dx = o2.x - o1.x;
+                let dy = o2.y - o1.y;
+                let r = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+                if (r < 10) {
+                    r = 10;
+                }
+                let f = (1000 * o1.m * o2.m) / Math.pow(r, 2);
+                let fx = f * dx / r;
+                let fy = f * dy / r;
+                o1.fx += fx;
+                o1.fy += fy;
+                o2.fx -= fx;
+                o2.fy -= fy;
+            }
+        }
+    }
+    for (let o1 of o) {
+        let ax = o1.fx / o1.m;
+        let ay = o1.fy / o1.m;
+
+        o1.vx += ax * dt;
+        o1.vy += ay * dt;
+
+        o1.x += o1.vx * dt;
+        o1.y += o1.vy * dt;
+    }
+
+}
+
+
 const CollisionTypes = Object.freeze({
     "push": resolveCollision,
     "bounce": resolveCollisionWithBounce
 });
 
-let currentCollisionType = CollisionTypes.bounce;
+let currentCollisionType = CollisionTypes.push;
 
 
 function switchCollisionType() {
@@ -207,8 +247,9 @@ function removeTimer(event) {
 
 function animate() {
     ctx.clearRect(0, 0, c.width, c.height);
+    moveWithGravity(0.1, objects);
     for (let o of objects) {
-        o.move(0.1);
+        // o.move(0.1);
         o.resolveEdgeCollision();
     }
     let collisions = [];
