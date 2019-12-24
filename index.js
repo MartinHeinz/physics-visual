@@ -14,6 +14,18 @@ class Shape {
     move(dt) {
         this.vx += this.ax * dt;
         this.vy += this.ay * dt;
+        if (this.vx > maxSpeed) {
+            this.vx = maxSpeed
+        }
+        if (this.vx < -maxSpeed) {
+            this.vx = -maxSpeed
+        }
+        if (this.vy > maxSpeed) {
+            this.vy = maxSpeed
+        }
+        if (this.vy < -maxSpeed) {
+            this.vy = -maxSpeed
+        }
         this.x += this.vx * dt;
         this.y += this.vy * dt;
     }
@@ -128,14 +140,10 @@ let objects = [
     new Shape(100, 80, 10, -1, -1, 1),
 ];
 
+const maxSpeed = 150;
 const c = document.getElementById("canvas");
 const ctx = c.getContext("2d");
 
-// const {collisionInfo, collided} = checkCollision(object1, object2);
-// console.log(collisionInfo);
-// if (collided) {
-//     console.log(`Objects collided! Penetration depth: ${object1.r + object2.r - collisionInfo.d}`)
-// }
 
 c.addEventListener('click', function(event) {
     let x = event.pageX - c.offsetLeft;
