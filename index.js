@@ -148,8 +148,8 @@ function moveWithGravity(dt, o) {
                 let dx = o2.x - o1.x;
                 let dy = o2.y - o1.y;
                 let r = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-                if (r < 10) {
-                    r = 10;
+                if (r < 1) {
+                    r = 1;
                 }
                 let f = (1000 * o1.m * o2.m) / Math.pow(r, 2);
                 let fx = f * dx / r;
@@ -179,23 +179,34 @@ const CollisionTypes = Object.freeze({
     "push": resolveCollision,
     "bounce": resolveCollisionWithBounce
 });
+let gravity = false;
 
 let currentCollisionType = CollisionTypes.push;
 
 
 function switchCollisionType() {
+    let label = document.getElementById("switchCollisionLabel");
     if (currentCollisionType === CollisionTypes.bounce) {
-        currentCollisionType = CollisionTypes.push
+        currentCollisionType = CollisionTypes.push;
+        label.textContent = "Push"
     }
     else {
-        currentCollisionType = CollisionTypes.bounce
+        currentCollisionType = CollisionTypes.bounce;
+        label.textContent = "Bounce"
     }
 }
 document.getElementById("switchCollision").onclick = switchCollisionType;
 
+function toggleGravity() {
+    let label = document.getElementById("toggleGravityLabel");
+    gravity = !gravity;
+    label.textContent = gravity ? "On" : "Off";
+}
+document.getElementById("toggleGravity").onclick = toggleGravity;
+
 let objects = [
-    new Shape(100, 50, 10, 1, 1, 10),
-    new Shape(100, 80, 10, -1, -1, 10),
+    new Shape(100, 50, 10, 1, 1, 100),
+    new Shape(100, 80, 10, -1, -1, 100),
 ];
 
 const maxSpeed = 150;
@@ -203,7 +214,7 @@ const c = document.getElementById("canvas");
 const ctx = c.getContext("2d");
 
 
-function createShape(event, radius=10, mass=10) {
+function createShape(event, radius=10, mass=100) {
     let x = event.pageX - c.offsetLeft;
     let y = event.pageY - c.offsetTop;
 
@@ -222,7 +233,7 @@ function myFunction() {
     timerFlag = true;
 }
 c.addEventListener("mousedown", mouseDown);
-document.body.addEventListener("mouseup", function(event) {
+c.addEventListener("mouseup", function(event) {
     removeTimer(event)
 }, false);
 
@@ -232,7 +243,7 @@ function removeTimer(event) {
         let timeDiff = endTime - startTime; //in ms
         // strip the ms
         timeDiff /= 1000;
-        createShape(event, Math.round(10*timeDiff), Math.ceil(10*timeDiff));
+        createShape(event, Math.round(10*timeDiff), Math.ceil(100*timeDiff));
         console.log(objects[objects.length- 1]);
     }
     else {
@@ -247,9 +258,17 @@ function removeTimer(event) {
 
 function animate() {
     ctx.clearRect(0, 0, c.width, c.height);
-    moveWithGravity(0.1, objects);
+
+    if (gravity) {
+        moveWithGravity(0.1, objects);
+    }
+    else {
+        for (let o of objects) {
+            o.move(0.1);
+        }
+    }
+
     for (let o of objects) {
-        // o.move(0.1);
         o.resolveEdgeCollision();
     }
     let collisions = [];

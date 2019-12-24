@@ -1,4 +1,9 @@
-<input id="switchCollision" type="button" value="Switch Collision Type"/>
+<div id="container">
+    <input id="switchCollision" type="button" value="Switch Collision Type"/>
+    <label id="switchCollisionLabel" for="switchCollision">Push</label>
+    <input id="toggleGravity" type="button" value="Toggle Gravity Mode"/>
+    <label id="toggleGravityLabel" for="toggleGravity">Off</label>
+</div>
 <canvas id="canvas">
 </canvas>
 
@@ -20,13 +25,13 @@
 <script type="text/javascript" src="index.js"></script>
 <style>
     * {  /* to remove the top and left whitespace */
-        margin:0;
-        padding:0;
+        margin: 0;
+        padding: 0;
     }
 
     html, body { /* just to be sure these are full screen*/
-        width:100%;
-        height:100%;
+        width: 100%;
+        height: 100%;
     }
 
     canvas { /* To remove the scrollbars */
@@ -35,11 +40,10 @@
         display: block;
     }
 
-    #switchCollision {
+    #container {
         bottom: 0;
         left: 0;
-        position: absolute;
-        width: 20%;
+        position: relative;
         height: 2%;
     }
 </style>
