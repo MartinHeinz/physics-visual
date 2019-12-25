@@ -1,8 +1,14 @@
 <div id="container">
-    <input id="switchCollision" type="button" value="Switch Collision Type"/>
-    <label id="switchCollisionLabel" for="switchCollision">Push</label>
-    <input id="toggleGravity" type="button" value="Toggle Gravity Mode"/>
-    <label id="toggleGravityLabel" for="toggleGravity">Off</label>
+    <div class="pair">
+        <input class="button" id="switchCollision" type="button" value="Switch Collision Type"/>
+        <br>
+        <label class="label" id="switchCollisionLabel" for="switchCollision">Push</label>
+    </div>
+    <div class="pair">
+        <input class="button" id="toggleGravity" type="button" value="Toggle Gravity Mode"/>
+        <br>
+        <label class="label" id="toggleGravityLabel" for="toggleGravity">Off</label>
+    </div>
 </div>
 <canvas id="canvas">
 </canvas>
@@ -35,7 +41,7 @@
     }
 
     canvas { /* To remove the scrollbars */
-        height: 98%;
+        height: 95%;
         width: 100vw;
         display: block;
     }
@@ -44,6 +50,40 @@
         bottom: 0;
         left: 0;
         position: relative;
-        height: 2%;
+        height: 5%;
+        float:left;
     }
+
+    div.pair {
+        float:left;
+        text-align: center;
+    }
+
+    .button {
+        background-color: white;
+        color: black;
+        border: 2px solid #555555;
+        border-radius: 2px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+
+        padding: 12px 28px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+    }
+
+    .button:hover {
+        background-color: #555555;
+        color: white;
+    }
+
+    .label {
+        font-size: 16px;
+        pointer-events: none;
+        font-family: Arial, serif;
+    }
+
 </style>
