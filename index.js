@@ -40,35 +40,30 @@ class Shape {
     }
 
     resolveEdgeCollision() {
-        let objectWidth = this.r * 2;
         // Detect collision with right wall.
-        if (this.x + objectWidth > c.width) {
+        if (this.x + this.r > c.width) {
             // Need to know how much we overshot the canvas width so we know how far to 'bounce'.
-            let overshootX = (this.x + objectWidth) - c.width;
-            this.x = c.width - overshootX - objectWidth;
+            this.x = c.width - this.r;
             this.vx = -this.vx;
             this.ax = -this.ax;
         }
 
         // Detect collision with bottom wall.
-        else if (this.y + objectWidth > c.height) {
-            let overshootY = (this.y + objectWidth) - c.height;
-            this.y = c.height - overshootY - objectWidth;
+        else if (this.y + this.r > c.height) {
+            this.y = c.height - this.r;
             this.vy = -this.vy;
             this.ay = -this.ay;
         }
 
         // Detect collision with left wall.
-        else if (this.x - objectWidth < 0) {
-            let overshootX = (this.x - objectWidth);
-            this.x = overshootX + objectWidth;
+        else if (this.x - this.r < 0) {
+            this.x  = this.r;
             this.vx = -this.vx;
             this.ax = -this.ax;
         }
         // Detect collision with top wall.
-        else if (this.y - objectWidth < 0) {
-            let overshootY = (this.y - objectWidth);
-            this.y = overshootY + objectWidth;
+        else if (this.y - this.r < 0) {
+            this.y = this.r;
             this.vy = -this.vy;
             this.ay = -this.ay;
         }
@@ -240,7 +235,7 @@ c.addEventListener("mouseup", function(event) {
 function removeTimer(event) {
     if(timerFlag) {
         let endTime = new Date();
-        let timeDiff = endTime - startTime; //in ms
+        let timeDiff = endTime - startTime; // in ms
         // strip the ms
         timeDiff /= 1000;
         createShape(event, Math.round(10*timeDiff), Math.ceil(100*timeDiff));
