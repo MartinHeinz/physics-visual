@@ -1,14 +1,14 @@
 
 class Shape {
-    constructor(x, y, radius, ax, ay, m) {
+    constructor(x, y, radius, ax, ay, m, vx=0, vy=0) {
         this.x = x;
         this.y = y;
         this.r = radius;
         this.ax = ax;
         this.ay = ay;
         this.m = m;
-        this.vx = 0;
-        this.vy = 0;
+        this.vx = vx;
+        this.vy = vy;
         this.fx = 0;
         this.fy = 0;
     }
@@ -199,14 +199,87 @@ function toggleGravity() {
 }
 document.getElementById("toggleGravity").onclick = toggleGravity;
 
-let objects = [
-    new Shape(100, 50, 10, 1, 1, 100),
-    new Shape(100, 80, 10, -1, -1, 100),
-];
 
 const maxSpeed = 150;
 const c = document.getElementById("canvas");
 const ctx = c.getContext("2d");
+
+let objects = [];
+
+function createPushingExample() {
+    let labelCollision = document.getElementById("switchCollisionLabel");
+    currentCollisionType = CollisionTypes.push;
+    labelCollision.textContent = "Push";
+
+    let labelGravity = document.getElementById("toggleGravityLabel");
+    gravity = false;
+    labelGravity.textContent = "Off";
+
+    objects = [];
+    let rows = 6;
+    let radius = 10;
+    let startX = Math.round(c.offsetWidth/3);
+    let startY = Math.round(c.offsetHeight/3);
+    let cols = Math.round(c.offsetHeight * 0.25)/radius; // 20% filled with balls (by height)
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            objects.push(new Shape(startX + j*radius, startY + i*radius, radius, 0, 0, 100))
+        }
+    }
+    objects.push(new Shape(20, startY + radius*rows/2, 20, 1, 0, 100))
+}
+
+function createGravityExample() {
+    let labelCollision = document.getElementById("switchCollisionLabel");
+    currentCollisionType = CollisionTypes.push;
+    labelCollision.textContent = "Push";
+
+    let labelGravity = document.getElementById("toggleGravityLabel");
+    gravity = true;
+    labelGravity.textContent = "On";
+
+    objects = [];
+
+    let centerX = c.offsetWidth/2;
+    let centerY = c.offsetHeight/2;
+    objects.push(new Shape(centerX, centerY, 45, 0, 0, 450));
+
+
+    objects.push(new Shape(20, c.offsetHeight/3, 5, 1, 0, 50, 50));
+    objects.push(new Shape(20, c.offsetHeight/4*3, 5, 1, 0, 50, 50));
+
+    objects.push(new Shape(c.offsetWidth - 30, c.offsetHeight/4*3, 10, -1, -1, 100, -30, -30));
+
+    objects.push(new Shape(c.offsetWidth/3*2, 20, 8, -1, -1, 80, 0, 25));
+
+    objects.push(new Shape(100, 100, 15, 1, 0, 150, 0, 0));
+}
+
+function createBouncingExample() {
+    let labelCollision = document.getElementById("switchCollisionLabel");
+    currentCollisionType = CollisionTypes.bounce;
+    labelCollision.textContent = "Bounce";
+
+    let labelGravity = document.getElementById("toggleGravityLabel");
+    gravity = false;
+    labelGravity.textContent = "Off";
+
+    objects = [];
+
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            let radius = getRandomInt(5, 30);
+            let x = getRandomInt(radius, c.offsetWidth - radius);
+            let y = getRandomInt(radius, c.offsetHeight - radius);
+            objects.push(new Shape(x, y, radius, getRandomInt(-1, 1), getRandomInt(-1, 1), radius*10));
+        }
+    }
+
+}
+
+document.getElementById("pushExample").onclick = createPushingExample;
+document.getElementById("gravityExample").onclick = createGravityExample;
+document.getElementById("bounceExample").onclick = createBouncingExample;
 
 
 function createShape(event, radius=10, mass=100) {
@@ -221,7 +294,7 @@ let timerFlag;
 let startTime = new Date();
 function mouseDown() {
     startTime = new Date();
-    holdTimer = window.setTimeout(myFunction,500); //set timeout to fire in 2 seconds when the user presses mouse button down
+    holdTimer = window.setTimeout(myFunction, 100); //set timeout to fire in 2 seconds when the user presses mouse button down
 }
 
 function myFunction() {
@@ -240,9 +313,6 @@ function removeTimer(event) {
         timeDiff /= 1000;
         createShape(event, Math.round(10*timeDiff), Math.ceil(100*timeDiff));
         console.log(objects[objects.length- 1]);
-    }
-    else {
-        createShape(event);
     }
     if (holdTimer) {
         window.clearTimeout(holdTimer);

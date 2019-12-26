@@ -1,4 +1,4 @@
-<div id="container">
+<div id="container-left">
     <div class="pair">
         <input class="button" id="switchCollision" type="button" value="Switch Collision Type"/>
         <br>
@@ -9,6 +9,13 @@
         <br>
         <label class="label" id="toggleGravityLabel" for="toggleGravity">Off</label>
     </div>
+</div>
+
+<div id="container-right">
+    Examples:
+        <input class="button" id="pushExample" type="button" value="Pushing Through Objects"/>
+        <input class="button" id="gravityExample" type="button" value="Gravity Pulling Objects"/>
+        <input class="button" id="bounceExample" type="button" value="Bouncing Objects"/>
 </div>
 <canvas id="canvas">
 </canvas>
@@ -46,12 +53,23 @@
         display: block;
     }
 
-    #container {
+    #container-left {
         bottom: 0;
         left: 0;
         position: relative;
         height: 5%;
-        float:left;
+        float: left;
+    }
+
+    #container-right {
+        bottom: 0;
+        left: 0;
+        position: relative;
+        height: 5%;
+        float: right;
+
+        font-size: 16px;
+        font-family: Arial, serif;
     }
 
     div.pair {
