@@ -244,17 +244,22 @@ function createGravityExample() {
 
     let centerX = c.offsetWidth/2;
     let centerY = c.offsetHeight/2;
-    objects.push(new Shape(centerX, centerY, 45, 0, 0, 450));
+    objects.push(new Shape(centerX, centerY, 45, 0, 0, 500));
 
+    objects.push(new Shape(330, 700, 10, 0, -1, 200, 0, -40));
+    objects.push(new Shape(270, 780, 7, 0, -1, 70, 0, 20));
 
-    objects.push(new Shape(20, c.offsetHeight/3, 5, 1, 0, 50, 50));
-    objects.push(new Shape(20, c.offsetHeight/4*3, 5, 1, 0, 50, 50));
+    objects.push(new Shape(300, 400, 10, 1, 0, 80, 25, -20));
 
-    objects.push(new Shape(c.offsetWidth - 30, c.offsetHeight/4*3, 10, -1, -1, 100, -30, -30));
+    objects.push(new Shape(610, 250, 3, 1, 0, 1, 25, 20));
+    objects.push(new Shape(650, 270, 5, 1, 0, 3, 45, 10));
+    objects.push(new Shape(680, 290, 3, 1, 0, 1, 35, 20));
 
-    objects.push(new Shape(c.offsetWidth/3*2, 20, 8, -1, -1, 80, 0, 25));
+    objects.push(new Shape(830, 450, 10, 1, 1, 60, 20, 50));
+    objects.push(new Shape(830, 300, 10, 1, 1, 100, 20, 50));
 
-    objects.push(new Shape(100, 100, 15, 1, 0, 150, 0, 0));
+    objects.push(new Shape(830, 600, 15, 0, 1, 115, 0, 75));
+    objects.push(new Shape(740, 820, 15, -1, 0, 100, -25, 50));
 }
 
 function createBouncingExample() {
