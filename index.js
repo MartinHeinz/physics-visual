@@ -242,9 +242,7 @@ function createGravityExample() {
 
     objects = [];
 
-    let centerX = c.offsetWidth/2;
-    let centerY = c.offsetHeight/2;
-    objects.push(new Shape(centerX, centerY, 45, 0, 0, 500));
+    objects.push(new Shape(640, 632, 45, 0, 0, 500));
 
     objects.push(new Shape(330, 700, 10, 0, -1, 200, 0, -40));
     objects.push(new Shape(270, 780, 7, 0, -1, 70, 0, 20));
