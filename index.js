@@ -295,6 +295,15 @@ function createShape(event, radius=10, mass=100) {
     objects.push(new Shape(x, y, radius, getRandomInt(-1, 1), getRandomInt(-1, 1), mass));
 }
 
+// Track mouse's position
+let mouseX = 0;
+let mouseY = 0;
+
+window.addEventListener('mousemove', (event) => {
+	mouseX = event.pageX - c.offsetLeft;
+	mouseY = event.pageY - c.offsetTop;
+});
+
 let holdTimer;
 let timerFlag;
 let startTime = new Date();
@@ -325,10 +334,31 @@ function removeTimer(event) {
     timerFlag = false;
 }
 
+/**
+ * Draws a circle near the mouse's cursor.
+ * The circle's radius gets bigger as long as the user is holding
+ * down the mouse button.
+ */
+function drawCircleNearCursor() {
+	const currentTime = new Date();
+	const timeDiff = currentTime - startTime;
+	const radius = timeDiff / 100;
+
+	ctx.beginPath();
+	ctx.arc(mouseX, mouseY, radius, Math.PI * 2, 0, false);
+    ctx.closePath();
+    ctx.fill();
+}
+
 /** This function is ran with every animation frame and each time clears canvas, updates coordinates of all objects,
  * resolves collisions of objects and edges of canvas , resolves collisions between objects and finally draws all of them. */
 function animate() {
     ctx.clearRect(0, 0, c.width, c.height);
+
+	// Left mouse button is held down
+	if (timerFlag) {
+		drawCircleNearCursor();
+	}
 
     if (gravity) {
         moveWithGravity(0.1, objects);
