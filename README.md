@@ -2,6 +2,12 @@
 
 This project is a simple simulation/visualization of some physics concepts like gravity, collisions or acceleration in 2D.
 
+-----
+
+If you find this useful, you can support me on Ko-Fi (Donations are always appreciated, but never required):
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K6F4XN6)
+
 ## Live Demo
 
 Live demo is available at <https://martinheinz.github.io/physics-visual/>
